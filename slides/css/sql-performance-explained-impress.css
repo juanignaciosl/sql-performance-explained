@@ -51,8 +51,21 @@ table {
     border-spacing: 0;
 }
 
+/*
+font-family: 'Annie Use Your Telescope', cursive;
+*/
+
+h1, h2, h3 {
+  font-family: 'Bowlby One SC', cursive;
+}
+
+pre.code {
+  font-family: 'VT323', monospace;
+}
+
 body {
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    /*font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
     color: #2E3C43;
     min-height: 740px;
 
@@ -91,7 +104,6 @@ a:focus {
 
 h1 {
   white-space: nowrap;
-  font-size: 120%;
 }
 
 .fallback-message {
@@ -131,6 +143,10 @@ h1 {
     line-height: 1.5;
 
     text-align: center;
+}
+
+.step ul, .step li {
+  text-align: left;
 }
 
 .step img {
@@ -281,12 +297,11 @@ h1 {
 
 #intro h1 {
   padding: 80px 40px 20px 40px;
-  font-size: 160%;
+  font-size: 130%;
 }
 
 #intro h2 {
-  font-size: 120%;
-  margin-bottom: 220px;
+  margin-bottom: 280px;
 }
 
 #intro .author {
