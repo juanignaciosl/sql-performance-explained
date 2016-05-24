@@ -27,7 +27,7 @@
 
 <div id="impress">
 
-    <div id="intro" class="step slide" data-x="-10000">
+    <div id="intro" class="step slide" data-x="-100000" data-scale="10">
       <div class="metadata">
         <h1>SQL Performance Explained</h1>
         <h2>Markus Winand</h2>
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div id="author" class="step juanignaciosl" data-x="-8800">
+    <div id="author" class="step juanignaciosl" data-x="-88000" data-scale="10">
       <div class="author">
         <h1><a href="https://juanignaciosl.github.io">Juan Ignacio Sánchez Lara</a></h1>
         <div class="metadata">
@@ -61,7 +61,17 @@
       <p class="footnote">More information at <a href="http://www.juanignaciosl.com">personal</a> and (newborn) <a href="http://juanignaciosl.github.io">develop</a> blogs</p>
     </div>
 
-    <div id="summary" class="step" data-x="-7600">
+    <div id="book-and-web" class="step" data-x="-76000"  data-scale="10">
+      <img class="book-cover" src="img/sql-performance-explained-cover.png" alt="SQL Performance Explained (book cover)"/>
+    </div>
+
+    <div id="book-and-web-1" class="step" data-x="-76000" data-z="15000" data-scale="10">
+      <img class="book-cover" src="img/use-the-index-luke.png" alt="Use the Index, Luke (web banner)"/>
+
+      <a href="http://use-the-index-luke.com/">Use the Index, Luke</a>
+    </div>
+
+    <div id="summary" class="step" data-x="-64000" data-scale="10">
       <h1>SQL Performance Explained</h1>
       <ol>
         <li>Book and web</li>
@@ -76,17 +86,84 @@
       </ol>
     </div>
 
-    <div id="book-and-web" class="step" data-x="-6400">
-      <img class="book-cover" src="img/sql-performance-explained-cover.png" alt="SQL Performance Explained (book cover)"/>
+    <div id="b-trees" class="step section" data-x="-52000" data-scale="10">
+      <h1>B-Trees</h1>
     </div>
 
-    <div id="book-and-web-1" class="step" data-x="-6400" data-z="1500">
-      <img class="book-cover" src="img/use-the-index-luke.png" alt="Use the Index, Luke (web banner)"/>
-
-      <a href="http://use-the-index-luke.com/">Use the Index, Luke</a>
+    <div id="b-trees-1" class="step description" data-x="-52000" data-z="-15000" data-rotate-x="-90" data-scale="10">
+      <h1>B-Trees</h1>
+      <img src="img/f1.1-index-leaf-nodes.png" class="figure"/>
     </div>
 
-    <div id="overview" class="step end" data-x="-5000" data-y="-1500" data-z="3000" data-scale="5" data-rotate-x="25">
+    <div id="b-trees-1-1" class="step description notes" data-x="-52000" data-z="-15000" data-rotate-x="-90" data-scale="10">
+      <h1>B-Trees</h1>
+      <ul>
+        <li>
+          Index leaf nodes
+          <ul>
+            <li>Doubly linked list</li>
+            <li>(Doubly) Sorted: inside and among nodes</li>
+          </ul>
+        </li>
+          <li>
+            Database blocks
+            <ul>
+              <li>Same size</li>
+              <li>Unsorted and unlinked</li>
+            </ul>
+          </li>
+      </ul>
+    </div>
+
+    <div id="b-trees-2" class="step description" data-x="-52000" data-y="-15000" data-z="-15000" data-rotate-x="-90" data-scale="10">
+      <h1>B-Trees</h1>
+      <img src="img/f1.2-b-tree-structure.png" class="figure"/>
+    </div>
+
+    <div id="b-trees-2-1" class="step description notes" data-x="-52000" data-y="-15000" data-z="-15000" data-rotate-x="-90" data-scale="10">
+      <h1>B-Trees</h1>
+      <ul>
+        <li>Branch node entry -> biggest value</li>
+        <li><em>Balanced</em> search tree: tree depth equal at every position</li>
+        <li>DB applies changes to the index and keeps the tree in balance</li>
+        <li>... thus causing maintenance overhead for write operations</li>
+      </ul>
+    </div>
+
+    <div id="b-trees-3" class="step description" data-x="-52000" data-y="-30000" data-z="-15000" data-rotate-x="-90" data-scale="10">
+      <h1>B-Trees</h1>
+      <img src="img/f1.3-b-tree-traversal.png" class="figure"/>
+    </div>
+
+    <div id="b-trees-3-1" class="step description notes" data-x="-52000" data-y="-30000" data-z="-15000" data-rotate-x="-90" data-scale="10">
+      <h1>B-Trees</h1>
+      <ul>
+        <li>Tree balance allows accessing all elements with the same number of steps</li>
+        <li>Logarithmic growth of the tree depth. Key tree depth factor: number of entries in each tree node. Databases often put hundreds.</li>
+      </ul>
+    </div>
+
+    <div id="b-trees-4" class="step description" data-x="-52000" data-y="-45000" data-z="-15000" data-rotate-x="-90" data-scale="10">
+      <h1>B-Trees: slowness</h1>
+      <ul>
+        <li>
+          Index lookup:
+          <ol>
+            <li>tree traversal</li>
+            <li>following the leaf node chain</li>
+            <li>fetching the table data</li>
+          </ol>
+        </li>
+        <li>Database must read the next leaf node looking for more matching entries</li>
+        <li>An index lookup needs to follow the leaf node chain</li>
+      </ul>
+    </div>
+
+    <div id="where-clause" class="step section" data-x="-40000" data-scale="10">
+      <h1>Where clause</h1>
+    </div>
+
+    <div id="overview" class="step end" data-x="-50000" data-y="-1500" data-z="3000" data-scale="50" data-rotate-x="25">
       <h1 class="highlight">Thank you very much!</h1>
       <p class="footnote">Slides & content available soon at <a href="http://juanignaciosl.github.io">juanignaciosl.github.io</a></p>
     </div>

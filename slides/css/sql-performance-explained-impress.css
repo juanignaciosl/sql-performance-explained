@@ -34,7 +34,7 @@ ol, ul {
     line-height: 2;
     margin: inherit;
 }
-ul ul {
+ul ul, ul ol {
   margin-left: 40px;
 }
 blockquote, q {
@@ -66,7 +66,7 @@ pre.code {
 body {
     font-family: 'Roboto', Helvetica, Arial, sans-serif;
     /*font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-    color: #2E3C43;
+    color: black;
     min-height: 740px;
 
     /*
@@ -151,7 +151,21 @@ h1 {
 
 .step img {
   max-width: 100%;
+  max-height: 100%;
 }
+
+.step.section h1 {
+  font-size: 400%;
+}
+
+.step.description h1 {
+  padding: 20px 40px;
+  border-bottom-style: dashed;
+  border-bottom-width: 2px;
+  margin-bottom: 10px;
+}
+
+.step.description.notes:not(.active) { opacity: 0 }
 
 .impress-enabled .step {
     margin: 0;
@@ -202,7 +216,7 @@ h1 {
   bottom: 40px;
   font-size: 70%;
   font-style: italic;
-  color: #678898;
+  color: black;
 }
 
 .full-image-background {
