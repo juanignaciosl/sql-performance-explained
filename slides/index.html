@@ -10,15 +10,17 @@
     <meta name="description" content="Talk abour Markus Winand book: SQL Performance Explained" />
     <meta name="author" content="Juan Ignacio Sánchez Lara" />
 
-    <link href='https://fonts.googleapis.com/css?family=Bowlby+One+SC|Roboto|Annie+Use+Your+Telescope|VT323' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Bowlby+One+SC|Roboto|Annie+Use+Your+Telescope|VT323|Fira+Mono:400,700|Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 
     <link href="css/sql-performance-explained-impress.css" rel="stylesheet" />
 
-    <link rel="shortcut icon" href="favicon.png" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/default.min.css">
 </head>
 
 <body class="impress-not-supported">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <div class="fallback-message">
     <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
@@ -143,7 +145,7 @@
       </ul>
     </div>
 
-    <div id="b-trees-4" class="step description" data-x="-52000" data-y="-45000" data-z="-15000" data-rotate-x="-90" data-scale="10">
+    <div id="b-trees-4" class="step description" data-x="-52000" data-y="-30000" data-z="-15000" data-scale="10">
       <h1>B-Trees: slowness</h1>
       <ul>
         <li>
@@ -161,6 +163,224 @@
 
     <div id="where-clause" class="step section" data-x="-40000" data-scale="10">
       <h1>Where clause</h1>
+    </div>
+
+    <div id="where-clause-1" class="step description" data-x="-40000" data-y="-15000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="ddl sql">
+CREATE TABLE employees (
+  employee_id integer not null PRIMARY key,
+  first_name character varying(1000),
+  last_name character varying(1000),
+  date_of_birth DATE NOT NULL,
+  phone_number character varying(1000) NOT NULL
+);
+
+create unique index on employees
+    (employee_id, subsidiary_id);
+      </code></pre>
+    </div>
+
+    <div id="where-clause-1c" class="step description" data-x="-25000" data-y="-15000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="ddl sql">
+        Table "public.employees"
+Column     |          Type           | Modifiers
+---------------+-------------------------+-----------
+employee_id   | integer                 | not null
+subsidiary_id | integer                 | not null
+first_name    | character varying(1000) |
+last_name     | character varying(1000) |
+date_of_birth | date                    | not null
+phone_number  | character varying(1000) | not null
+Indexes:
+"employees_pkey" PRIMARY KEY, <strong>btree</strong> (employee_id)
+"employees_employee_id_subsidiary_id_idx" UNIQUE,
+    <strong>btree</strong> (employee_id, subsidiary_id)
+      </code></pre>
+    </div>
+
+    <div id="where-clause-2" class="step question" data-x="-40000" data-y="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE employee_id = 123;
+      </code></pre>
+    </div>
+
+    <div id="where-clause-2b" class="step answer" data-x="-40000" data-y="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE employee_id = 123;
+      </code></pre>
+      <pre><code class="sql plan">
+<strong>Index Scan</strong> using employees_pkey on employees
+    (cost=0.14..8.16 rows=1 width=1032)
+    (actual time=0.006..0.006 rows=0 loops=1)
+  Index Cond: (employee_id = 123)
+Planning time: 0.144 ms
+Execution time: 0.038 ms
+      </code></pre>
+    </div>
+
+    <div id="where-clause-3" class="step question" data-x="-40000" data-y="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE employee_id = 123;
+      </code></pre>
+    </div>
+
+    <div id="where-clause-3b" class="step answer" data-x="-40000" data-y="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE employee_id = 123;
+      </code></pre>
+      <pre><code class="sql plan">
+<strong>Index Scan</strong> using employees_pkey on employees
+    (cost=0.29..8.31 rows=1 width=16)
+    (actual time=0.009..0.010 rows=1 loops=1)
+Index Cond: (employee_id = 123)
+Planning time: 0.310 ms
+Execution time: 0.051 ms
+      </code></pre>
+    </div>
+
+    <div id="where-clause-4" class="step question" data-x="-40000" data-y="-60000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE employee_id = 111
+    and subsidiary_id = 333;
+      </code></pre>
+    </div>
+
+    <div id="where-clause-4b" class="step answer" data-x="-40000" data-y="-60000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE employee_id = 111
+    and subsidiary_id = 333;
+      </code></pre>
+      <pre><code class="sql plan">
+<strong>Index Scan</strong> using employees_employee_id_subsidiary_id_idx
+    on employees (cost=0.29..8.31 rows=1 width=16)
+    (actual time=0.023..0.025 rows=1 loops=1)
+Index Cond: ((employee_id = 111) AND (subsidiary_id = 333))
+Planning time: 0.130 ms
+Execution time: 0.056 ms
+      </code></pre>
+    </div>
+
+    <div id="where-clause-5" class="step question" data-x="-40000" data-y="-75000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE subsidiary_id = 333;
+      </code></pre>
+    </div>
+
+    <div id="where-clause-5b" class="step answer wtf" data-x="-40000" data-y="-75000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE subsidiary_id = 333;
+      </code></pre>
+      <pre><code class="sql plan">
+<strong class="wtfit">Index Scan</strong> using employees_employee_id_subsidiary_id_idx
+    on employees (cost=0.29..1858.30 rows=1 width=16)
+    (actual time=0.034..3.498 rows=1 loops=1)
+  Index Cond: (subsidiary_id = 333)
+Planning time: 0.101 ms
+Execution time: 3.527 ms
+      </code></pre>
+    </div>
+
+    <div id="where-clause-5c" class="step answer wtf" data-x="-40000" data-y="-75000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE subsidiary_id = 333;
+      </code></pre>
+      <pre><code class="sql plan">
+<strong class="wtfit">Index Scan</strong> using employees_employee_id_subsidiary_id_idx
+    on employees (cost=0.29..1858.30 rows=1 width=16)
+    (actual time=0.034..3.498 rows=1 loops=1)
+  Index Cond: (subsidiary_id = 333)
+Planning time: 0.101 ms
+Execution time: 3.527 ms
+      </code></pre>
+      <blockquote class="whytf">
+        A multicolumn B-tree index can be used with query conditions that involve any subset of the index's columns,
+        but the index is most efficient when there are constraints on the leading (leftmost) columns.
+        <a class="source" href="https://www.postgresql.org/docs/current/static/indexes-multicolumn.html">PostgreSQL manual</a>
+      </blockquote>
+    </div>
+
+    <div id="where-clause-6" class="step question" data-x="-40000" data-y="-90000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE last_name = 'LN 38'
+      </code></pre>
+    </div>
+
+    <div id="where-clause-6b" class="step answer" data-x="-40000" data-y="-90000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE upper(last_name) = 'LN 38'
+      </code></pre>
+      <pre><code class="sql plan">
+<strong>Seq Scan</strong> on employees (cost=0.00..2334.00 rows=500 width=16)
+(actual time=0.048..46.647 rows=1 loops=1)
+Filter: (upper(last_name) = 'LN 38'::text)
+Rows Removed by Filter: 99999
+Planning time: 0.092 ms
+Execution time: 46.672 ms
+(5 rows)
+      </code></pre>
+    </div>
+
+    <div id="where-clause-6d" class="step answer" data-x="-40000" data-y="-90000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+create index employees_upper_last_name
+    on employees(<strong>upper(last_name)</strong>);
+      </code></pre>
+    </div>
+
+    <div id="where-clause-6e" class="step answer" data-x="-40000" data-y="-90000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+explain analyze SELECT first_name, last_name
+FROM employees WHERE upper(last_name) = 'LN 38'
+      </code></pre>
+      <pre><code class="sql plan">
+<strong>Bitmap Heap Scan</strong> on employees
+    (cost=12.29..775.05 rows=500 width=16)
+    (actual time=0.070..0.070 rows=1 loops=1)
+  Recheck Cond: (upper(last_name) = 'LN 38'::text)
+  Heap Blocks: exact=1
+  ->  Bitmap Index Scan on employees_upper_last_name
+            (cost=0.00..12.17 rows=500 width=0)
+            (actual time=0.065..0.065 rows=1 loops=1)
+        Index Cond: (upper(last_name) = 'LN 38'::text)
+Planning time: 0.360 ms
+Execution time: 0.091 ms
+      </code></pre>
+    </div>
+
+    <div id="where-clause-6f" class="step answer conclusion" data-x="-40000" data-y="-90000" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <ul>
+        <li>Master <code>explain plan</code></li>
+        <li>Avoid redundant indexes</li>
+        <li>Avoid Seq Scan</li>
+        <li>Keep an eye on queries and ORMs</li>
+      </ul>
     </div>
 
     <div id="overview" class="step end" data-x="-50000" data-y="-1500" data-z="3000" data-scale="50" data-rotate-x="25">

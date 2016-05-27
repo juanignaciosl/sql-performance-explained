@@ -56,11 +56,69 @@ font-family: 'Annie Use Your Telescope', cursive;
 */
 
 h1, h2, h3 {
-  font-family: 'Bowlby One SC', cursive;
+  font-family: 'Bowlby One SC', Helvetica, Arial, sans-serif;;
 }
 
-pre.code {
-  font-family: 'VT323', monospace;
+code {
+  font-size: 80%;
+}
+
+pre.code, code {
+  /*font-family: 'VT323', monospace;*/
+  font-family: 'Fira Mono', monospace;
+  text-align: left;
+}
+
+pre code.sql.hljs {
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1.3;
+}
+
+pre + pre {
+  margin-top: 10px;
+}
+
+.whytf {
+  position: absolute;
+  margin: 15%;
+  padding: 5%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 0, 0.9);
+  border-radius: 20px;
+  font-family: "Open Sans Condensed", sans-serif;
+  font-size: 140%;
+}
+
+.source {
+  display: inline-block;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 60%;
+}
+
+.source::before {
+  content: "[";
+}
+
+.source::after {
+  content: "]";
+}
+
+code .hljs-keyword {
+  font-weight: normal;
+}
+
+code strong, code .hljs-keyword {
+  color: #111;
+}
+
+blockquote::before, blockquote::after {
+  content: '"';
 }
 
 body {
@@ -158,14 +216,26 @@ h1 {
   font-size: 400%;
 }
 
-.step.description h1 {
+.step.description h1, .step.question h1, .step.answer h1 {
   padding: 20px 40px;
   border-bottom-style: dashed;
   border-bottom-width: 2px;
   margin-bottom: 10px;
 }
 
-.step.description.notes:not(.active) { opacity: 0 }
+.step.description.notes:not(.active),
+.step.question.notes:not(.active),
+.step.answer.notes:not(.active) {
+  opacity: 0;
+}
+
+.wtf h1, .wtfit {
+  color: red;
+}
+
+.impress-enabled .step.answer {
+  opacity: 0;
+}
 
 .impress-enabled .step {
     margin: 0;
@@ -246,16 +316,6 @@ h1 {
   padding: 40px 60px;
 }
 
-.light-map-background {
-  background-image: url('../img/backgrounds/map-light.jpg');
-}
-
-.light-map-background .content > * {
-  padding-right: 300px;
-}
-.light-map-background .content > h1, .light-map-background .content > .footnote {
-  padding-right: inherit;
-}
 
 .splash h1, .end h1 {
   font-size: 400%;
@@ -291,7 +351,6 @@ h1 {
 }
 
 #intro {
-  background: url('../img/backgrounds/vulnerability.a5e1c5f0.png') no-repeat 0 0;
   background-size: 100% 100%;
   background-color: white;
   padding: 40px;
