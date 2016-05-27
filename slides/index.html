@@ -181,7 +181,7 @@ create unique index on employees
       </code></pre>
     </div>
 
-    <div id="where-clause-1c" class="step description" data-x="-25000" data-y="-15000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-1c" class="step description" data-x="-40000" data-y="-15000" data-scale="10">
       <h1>Where clause: indexes</h1>
       <pre><code class="ddl sql">
         Table "public.employees"
@@ -373,13 +373,71 @@ Execution time: 0.091 ms
       </code></pre>
     </div>
 
-    <div id="where-clause-6f" class="step answer conclusion" data-x="-40000" data-y="-90000" data-scale="10">
+    <div id="where-clause-7" class="step question" data-x="-40000" data-y="-105000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+select * from employees where date_of_birth > '1/1/1082'
+    and date_of_birth < '1/1/1083' and subsidiary_id = 50;
+      </code></pre>
+      <pre><code class="sql">
+create index employees_date on
+    employees(date_of_birth, subsidiary_id);
+      </code></pre>
+      <pre><code class="sql">
+create index employees_date on
+    employees(subsidiary_id, date_of_birth);
+      </code></pre>
+    </div>
+
+    <div id="where-clause-7b" class="step question" data-x="-40000" data-y="-120000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <img src="img/f2.2-index-range.png" class="figure"/>
+    </div>
+
+    <div id="where-clause-7c" class="step question" data-x="-40000" data-y="-135000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <img src="img/f2.3-index-range.png" class="figure"/>
+    </div>
+
+    <div id="where-clause-7d" class="step question compressed" data-x="-40000" data-y="-150000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes</h1>
+      <pre><code class="sql">
+Bitmap Heap Scan on employees
+    (cost=<strong>14.54..22.28</strong> rows=2 width=592) (actual time=0.069..0.071 rows=4 loops=1)
+  Recheck Cond: ((date_of_birth > '1082-01-01'::date)
+      AND (date_of_birth < '1083-01-01'::date) AND (subsidiary_id = 50))
+  Heap Blocks: exact=3
+  ->  Bitmap Index Scan on employees_date  (cost=0.00..14.54 rows=2 width=0)
+      (actual time=0.064..0.064 rows=4 loops=1)
+        Index Cond: ((date_of_birth > '1082-01-01'::date)
+            AND (date_of_birth < '1083-01-01'::date) AND (subsidiary_id = 50))
+Planning time: 0.365 ms
+Execution time: 0.099 ms
+      </code></pre>
+      <pre><code class="sql">
+Bitmap Heap Scan on employees
+    (cost=<strong>4.34..19.58</strong> rows=4 width=35) (actual time=0.045..0.051 rows=4 loops=1)
+  Recheck Cond: ((subsidiary_id = 50) AND (date_of_birth > '1082-01-01'::date)
+      AND (date_of_birth < '1083-01-01'::date))
+  Heap Blocks: exact=3
+  ->  Bitmap Index Scan on employees_date  (cost=0.00..4.34 rows=4 width=0)
+      (actual time=0.037..0.037 rows=4 loops=1)
+        Index Cond: ((subsidiary_id = 50) AND (date_of_birth > '1082-01-01'::date)
+            AND (date_of_birth < '1083-01-01'::date))
+Planning time: 0.481 ms
+Execution time: 0.084 ms
+      </code></pre>
+    </div>
+
+    <div id="where-clause-conclusion" class="step answer conclusion" data-x="-40000" data-y="-150000" data-scale="10">
       <h1>Where clause: indexes</h1>
       <ul>
         <li>Master <code>explain plan</code></li>
         <li>Avoid redundant indexes</li>
         <li>Avoid Seq Scan</li>
-        <li>Keep an eye on queries and ORMs</li>
+        <li>Keep an eye on queries and ORMs for function indexes</li>
+        <li>Index equality before ranges</li>
+        <li>Disclaimer: actual results depend on data and filters</li>
       </ul>
     </div>
 

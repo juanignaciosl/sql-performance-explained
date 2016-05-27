@@ -63,6 +63,10 @@ code {
   font-size: 80%;
 }
 
+.compressed code {
+  font-size: 60%;
+}
+
 pre.code, code {
   /*font-family: 'VT323', monospace;*/
   font-family: 'Fira Mono', monospace;
@@ -217,7 +221,10 @@ h1 {
 }
 
 .step.description h1, .step.question h1, .step.answer h1 {
-  padding: 20px 40px;
+  padding-top: 0;
+  padding-right: 40px;
+  padding-bottom: 20px;
+  padding-left: 40px;
   border-bottom-style: dashed;
   border-bottom-width: 2px;
   margin-bottom: 10px;
