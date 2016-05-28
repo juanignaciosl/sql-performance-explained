@@ -10,7 +10,7 @@
     <meta name="description" content="Talk abour Markus Winand book: SQL Performance Explained" />
     <meta name="author" content="Juan Ignacio Sánchez Lara" />
 
-    <link href='https://fonts.googleapis.com/css?family=Bowlby+One+SC|Roboto|Annie+Use+Your+Telescope|VT323|Fira+Mono:400,700|Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Overlock|Overlock+SC|Fira+Mono:400,700|Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 
     <link href="css/sql-performance-explained-impress.css" rel="stylesheet" />
 
@@ -399,7 +399,9 @@ explain analyze SELECT first_name, last_name
 FROM employees WHERE last_name = 'LN 38'
       </code></pre>
       <pre><code class="sql">
-<strong>Index Scan</strong> using employees_last_name on employees  (cost=0.42..8.44 rows=1 width=16) (actual time=0.049..0.049 rows=1 loops=1)
+<strong>Index Scan</strong> using employees_last_name on employees
+    (cost=0.42..8.44 rows=1 width=16)
+    (actual time=0.049..0.049 rows=1 loops=1)
   Index Cond: (last_name = 'LN 38'::text)
 Planning time: 0.286 ms
 Execution time: 0.082 ms
@@ -413,8 +415,9 @@ explain analyze SELECT first_name, last_name
 FROM employees WHERE upper(last_name) = 'LN 38'
       </code></pre>
       <pre><code class="sql plan">
-<strong>Seq Scan</strong> on employees (cost=0.00..2334.00 rows=500 width=16)
-(actual time=0.048..46.647 rows=1 loops=1)
+<strong>Seq Scan</strong> on employees
+    (cost=0.00..2334.00 rows=500 width=16)
+    (actual time=0.048..46.647 rows=1 loops=1)
 Filter: (upper(last_name) = 'LN 38'::text)
 Rows Removed by Filter: 99999
 Planning time: 0.092 ms

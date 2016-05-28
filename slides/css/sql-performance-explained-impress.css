@@ -51,14 +51,6 @@ table {
     border-spacing: 0;
 }
 
-/*
-font-family: 'Annie Use Your Telescope', cursive;
-*/
-
-h1, h2, h3 {
-  font-family: 'Bowlby One SC', Helvetica, Arial, sans-serif;;
-}
-
 code {
   font-size: 80%;
 }
@@ -68,8 +60,6 @@ code {
 }
 
 pre.code, code {
-  /*font-family: 'VT323', monospace;*/
-  font-family: 'Fira Mono', monospace;
   text-align: left;
 }
 
@@ -93,7 +83,6 @@ pre + pre {
   right: 0;
   background: rgba(255, 255, 0, 0.9);
   border-radius: 20px;
-  font-family: "Open Sans Condensed", sans-serif;
   font-size: 140%;
 }
 
@@ -126,8 +115,22 @@ blockquote::before, blockquote::after {
 }
 
 body {
-    font-family: 'Roboto', Helvetica, Arial, sans-serif;
-    /*font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+  font-family: 'Overlock', Helvetica, Arial, sans-serif;
+}
+
+.explanation {
+  font-family: "Open Sans Condensed", sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Overlock SC', Helvetica, Arial, sans-serif;
+}
+
+pre.code, code {
+  font-family: 'Fira Mono', monospace;
+}
+
+body {
     color: black;
     min-height: 740px;
 
@@ -223,11 +226,20 @@ h1 {
 .step.description h1, .step.question h1, .step.answer h1 {
   padding-top: 0;
   padding-right: 40px;
-  padding-bottom: 20px;
   padding-left: 40px;
-  border-bottom-style: dashed;
-  border-bottom-width: 2px;
+
   margin-bottom: 10px;
+
+  text-align: left;
+  color: #444;
+}
+
+.step.description h1::before, .step.question h1::before, .step.answer h1::before {
+  content: '· ·  ';
+}
+
+.step.description h1::after, .step.question h1::after, .step.answer h1::after {
+  content: '  · · · · · · · · · · · · · · · · · · · · · · · · · · · ·';
 }
 
 .step.description.notes:not(.active),
