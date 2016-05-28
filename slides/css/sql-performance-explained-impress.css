@@ -221,7 +221,6 @@ h1 {
 
 .step.section h1 {
   font-size: 300%;
-  text-shadow: 0px 13px 17px rgba(150, 150, 150, 0.8);
 }
 
 .step.description h1, .step.question h1, .step.answer h1 {
@@ -233,6 +232,10 @@ h1 {
 
   text-align: left;
   color: #444;
+}
+
+.step.section h1, #intro h1, #intro h2 {
+  text-shadow: 0px 13px 17px rgba(150, 150, 150, 0.8);
 }
 
 .step.description h1::before, .step.question h1::before, .step.answer h1::before {
@@ -251,6 +254,10 @@ h1 {
 
 .wtf h1, .wtfit {
   color: red;
+}
+
+#summary ol {
+  margin-left: 100px;
 }
 
 .impress-enabled .step.answer {
