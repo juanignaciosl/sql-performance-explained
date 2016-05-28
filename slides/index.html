@@ -68,19 +68,27 @@
     </div>
 
     <div id="book-and-web-1" class="step" data-x="-76000" data-z="15000" data-scale="10">
-      <img class="book-cover" src="img/use-the-index-luke.png" alt="Use the Index, Luke (web banner)"/>
+      <a href="http://use-the-index-luke.com/">
+        <img class="book-cover" src="img/use-the-index-luke.png" alt="Use the Index, Luke (web banner)"/>
+      </a>
 
       <a href="http://use-the-index-luke.com/">Use the Index, Luke</a>
+
+      <a href="https://www.postgresql.org/docs/9.5/static/index.html">
+        <img class="book-cover" src="img/postgresql-banner.png" alt="PostgreSQL manual"/>
+      </a>
+
+      <a href="https://www.postgresql.org/docs/9.5/static/index.html">PostgreSQL Manual</a>
     </div>
 
     <div id="summary" class="step" data-x="-64000" data-scale="10">
       <h1>SQL Performance Explained</h1>
       <ol>
         <li>Book and web</li>
-        <li>B-Trees</li>
-        <li>Filtering</li>
-        <li>Joining</li>
-        <li>Clustering (data)</li>
+        <li>Anatomy of an Index</li>
+        <li>The Where Clause</li>
+        <li>Performance and Scalability</li>
+        <li>Clustering Data</li>
         <li>Sorting and grouping</li>
         <li>Partial results</li>
         <li>Modifying data</li>
@@ -89,16 +97,16 @@
     </div>
 
     <div id="b-trees" class="step section" data-x="-52000" data-scale="10">
-      <h1>B-Trees</h1>
+      <h1>Anatomy of an Index</h1>
     </div>
 
     <div id="b-trees-1" class="step description" data-x="-52000" data-z="-15000" data-rotate-x="-90" data-scale="10">
-      <h1>B-Trees</h1>
+      <h1>Anatomy of an Index</h1>
       <img src="img/f1.1-index-leaf-nodes.png" class="figure"/>
     </div>
 
     <div id="b-trees-1-1" class="step description notes" data-x="-52000" data-z="-15000" data-rotate-x="-90" data-scale="10">
-      <h1>B-Trees</h1>
+      <h1>Anatomy of an Index</h1>
       <ul>
         <li>
           Index leaf nodes
@@ -118,12 +126,12 @@
     </div>
 
     <div id="b-trees-2" class="step description" data-x="-52000" data-y="-15000" data-z="-15000" data-rotate-x="-90" data-scale="10">
-      <h1>B-Trees</h1>
+      <h1>Anatomy of an Index</h1>
       <img src="img/f1.2-b-tree-structure.png" class="figure"/>
     </div>
 
     <div id="b-trees-2-1" class="step description notes" data-x="-52000" data-y="-15000" data-z="-15000" data-rotate-x="-90" data-scale="10">
-      <h1>B-Trees</h1>
+      <h1>Anatomy of an Index</h1>
       <ul>
         <li>Branch node entry -> biggest value</li>
         <li><em>Balanced</em> search tree: tree depth equal at every position</li>
@@ -133,12 +141,12 @@
     </div>
 
     <div id="b-trees-3" class="step description" data-x="-52000" data-y="-30000" data-z="-15000" data-rotate-x="-90" data-scale="10">
-      <h1>B-Trees</h1>
+      <h1>Anatomy of an Index</h1>
       <img src="img/f1.3-b-tree-traversal.png" class="figure"/>
     </div>
 
     <div id="b-trees-3-1" class="step description notes" data-x="-52000" data-y="-30000" data-z="-15000" data-rotate-x="-90" data-scale="10">
-      <h1>B-Trees</h1>
+      <h1>Anatomy of an Index</h1>
       <ul>
         <li>Tree balance allows accessing all elements with the same number of steps</li>
         <li>Logarithmic growth of the tree depth. Key tree depth factor: number of entries in each tree node. Databases often put hundreds.</li>
@@ -162,11 +170,11 @@
     </div>
 
     <div id="where-clause" class="step section" data-x="-40000" data-scale="10">
-      <h1>Where clause</h1>
+      <h1>The Where Clause</h1>
     </div>
 
     <div id="where-clause-1" class="step description" data-x="-40000" data-y="-15000" data-rotate-x="-90" data-scale="10">
-      <h1>Where clause</h1>
+      <h1>The Where Clause</h1>
       <pre><code class="ddl sql">
 CREATE TABLE employees (
   employee_id integer not null PRIMARY key,
@@ -185,7 +193,7 @@ create index employees_last_name on employees(last_name);
     </div>
 
     <div id="where-clause-1c" class="step description" data-x="-40000" data-y="-30000" data-rotate-x="-90" data-scale="10">
-      <h1>Where clause</h1>
+      <h1>The Where Clause</h1>
       <pre><code class="ddl sql">
         Table "public.employees"
 Column     |          Type           |  Modifiers
@@ -293,8 +301,8 @@ Planning time: 0.101 ms
 Execution time: 3.527 ms
       </code></pre>
       <blockquote class="explanation">
-        A multicolumn B-tree index can be used with query conditions that involve any subset of the index's columns,
-        but the index is most efficient when there are constraints on the leading (leftmost) columns.
+        <p>A multicolumn B-tree index can be used with query conditions that involve any subset of the index's columns,
+        but the index is most efficient when there are constraints on the leading (leftmost) columns.</p>
         <a class="source" href="https://www.postgresql.org/docs/9.5/static/indexes-multicolumn.html">PostgreSQL manual</a>
       </blockquote>
     </div>
