@@ -83,10 +83,10 @@ pre + pre {
   margin-top: 10px;
 }
 
-.whytf {
+.explanation {
   position: absolute;
-  margin: 15%;
-  padding: 5%;
+  margin: 10%;
+  padding: 2% 3%;
   top: 0;
   bottom: 0;
   left: 0;
