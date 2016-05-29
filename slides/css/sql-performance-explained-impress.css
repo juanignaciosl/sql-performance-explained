@@ -86,8 +86,11 @@ pre + pre {
   left: 0;
   right: 0;
   background: rgba(255, 255, 0, 0.9);
-  border-radius: 20px;
   font-size: 140%;
+}
+
+ul.conclusion, .explanation {
+  border-radius: 20px;
 }
 
 .source {
@@ -254,6 +257,13 @@ h1 {
 
 .wtf h1, .wtfit {
   color: red;
+}
+
+ul.conclusion {
+  background: #111;
+  color: white;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 #summary ol {

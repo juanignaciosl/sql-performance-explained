@@ -88,6 +88,7 @@
         <li>Anatomy of an Index</li>
         <li>The Where Clause</li>
         <li>Performance and Scalability</li>
+        <li>The Join Operation</li>
         <li>Clustering Data</li>
         <li>Sorting and grouping</li>
         <li>Partial results</li>
@@ -504,20 +505,25 @@ create index enabled_employees on employees(last_name)
       </code></pre>
     </div>
 
-    <div id="where-clause-conclusion" class="step question conclusion" data-x="-40000" data-y="-210000" data-scale="10">
-      <h1>Where clause: indexes - wrapping it up</h1>
+    <div id="where-clause-10" class="step description" data-x="-40000" data-y="-225000" data-rotate-x="-90" data-scale="10">
+      <h1>Where clause: indexes - parameterized queries</h1>
+      <pre><code class="java">
+int subsidiary_id;
+PreparedStatement command = connection.prepareStatement(
+  "select first_name from employees where subsidiary_id = ?"
+);
+command.setInt(1, subsidiary_id);
+      </code></pre>
       <ul>
-        <li>Master <code>explain plan</code></li>
-        <li>Avoid redundant indexes</li>
-        <li>Avoid Seq Scan</li>
-        <li>Keep an eye on queries and ORMs for function indexes</li>
-        <li>... since functions and transformations prevent index usage</li>
-        <li>Index equality before ranges</li>
-        <li>One multiple index is faster than two</li>
+        <li>Prevents SQL injection</li>
+        <li>
+          Executing exactly same statement multiple times uses <strong>execution plan cache</strong>.
+          The same SQL statement with different values is treated like different statements, recreating the execution plan.
+        </li>
       </ul>
     </div>
 
-    <div id="where-clause-conclusion" class="step answer conclusion" data-x="-40000" data-y="-210000" data-scale="10">
+    <div id="where-clause-conclusion" class="step question conclusion" data-x="-40000" data-y="-225000" data-scale="10">
       <h1>Where clause: indexes - wrapping it up</h1>
       <ul>
         <li>Master <code>explain plan</code></li>
@@ -527,11 +533,110 @@ create index enabled_employees on employees(last_name)
         <li>... since functions and transformations prevent index usage</li>
         <li>Index equality before ranges</li>
         <li>One multiple index is faster than two</li>
+        <li>Parameterize as much as possible</li>
+      </ul>
+    </div>
+
+    <div id="where-clause-conclusion-1" class="step answer conclusion" data-x="-40000" data-y="-225000" data-scale="10">
+      <h1>Where clause: indexes - wrapping it up</h1>
+      <ul>
+        <li>Master <code>explain plan</code></li>
+        <li>Avoid redundant indexes</li>
+        <li>Avoid Seq Scan</li>
+        <li>Keep an eye on queries and ORMs for function indexes</li>
+        <li>... since functions and transformations prevent index usage</li>
+        <li>Index equality before ranges</li>
+        <li>One multiple index is faster than two</li>
+        <li>Parameterize as much as possible</li>
         <li><strong>Disclaimer: actual results depend on data and filters</strong></li>
       </ul>
     </div>
 
-    <div id="overview" class="step end" data-x="-50000" data-y="-1500" data-z="3000" data-scale="50" data-rotate-x="25">
+    <div id="performance" class="step section" data-x="-28000" data-scale="10">
+      <h1>Performance and<br>Scalability</h1>
+    </div>
+
+    <div id="join" class="step section" data-x="-52000" data-y="8000" data-scale="10">
+      <h1>The Join Operation</h1>
+    </div>
+
+    <div id="join-1" class="step description" data-x="-52000" data-y="8000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>The Join Operation</h1>
+      <ul>
+        <li>Normalized -> Denormalized</li>
+        <li>2 tables => 1 step (corollary: +2 tables => +1 step)</li>
+        <li>Tables are pipelined, there's no intermediate materialization</li>
+        <li>The more complicated the query, the harder the optimization, use bind variables!</li>
+        <li>Three basic algorithms: nested loops, hash join and sort merge</li>
+      </ul>
+      <div class="footnote"><a href="https://www.postgresql.org/docs/9.5/static/planner-optimizer.html">PostgreSQL details</a></div>
+    </div>
+
+    <div id="join-nested-loops" class="step question" data-x="-52000" data-y="-7000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>The Join Operation: Nested Loops</h1>
+      <ul>
+        <li><strong>The right relation is scanned once for every row found in the left one</strong></li>
+        <li>Analogous to ORMs N+1 issue. Corollary: get to know your ORM and take control of joins</li>
+        <li>Requires indexing of the join columns</li>
+      </ul>
+    </div>
+
+    <div id="join-nested-loops-1" class="step answer" data-x="-52000" data-y="-7000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>The Join Operation: Nested Loops</h1>
+      <ul>
+        <li><strong>The right relation is scanned once for every row found in the left one</strong></li>
+        <li>Analogous to ORMs N+1 issue. Corollary: get to know your ORM and take control of joins</li>
+        <li>Requires indexing of the join columns</li>
+      </ul>
+      <ul class="conclusion">
+        <li>Good performance if the driving query returns a small result set</li>
+        <li>Downside: many B-tree traversals when executing the inner query</li>
+      </ul>
+    </div>
+
+    <div id="join-hash-join" class="step question" data-x="-52000" data-y="-22000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>The Join Operation: Hash Join</h1>
+      <ul>
+        <li><strong>The right relation is first scanned and loaded into a hash table, using its join attributes as hash keys. Next the left relation is scanned and the appropriate values of every row found are used as hash keys to locate the matching rows in the table</strong></li>
+        <li>You can improve hash join performance by selecting fewer columns</li>
+        <li>There is no need to index the join columns. Indexing independent where predicates improve performance</li>
+      </ul>
+    </div>
+
+    <div id="join-hash-join-1" class="step answer" data-x="-52000" data-y="-22000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>The Join Operation: Hash Join</h1>
+      <ul>
+        <li><strong>The right relation is first scanned and loaded into a hash table, using its join attributes as hash keys. Next the left relation is scanned and the appropriate values of every row found are used as hash keys to locate the matching rows in the table</strong></li>
+        <li>You can improve hash join performance by selecting fewer columns</li>
+        <li>There is no need to index the join columns. Indexing independent where predicates improve performance</li>
+      </ul>
+      <ul class="conclusion">
+        <li>Only one scan per table</li>
+        <li>Symmetric</li>
+      </ul>
+    </div>
+
+    <div id="join-sort-merge" class="step question" data-x="-52000" data-y="-37000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>The Join Operation: Sort Merge</h1>
+      <ul>
+        <li>Each relation is sorted on the join attributes before the join starts. Then the two relations are scanned in parallel, and matching rows are combined to form join rows</li>
+        <li>Only one scan per table</li>
+      </ul>
+    </div>
+
+    <div id="join-sort-merge" class="step answer" data-x="-52000" data-y="-37000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>The Join Operation: Sort Merge</h1>
+      <ul>
+        <li>Each relation is sorted on the join attributes before the join starts. Then the two relations are scanned in parallel, and matching rows are combined to form join rows</li>
+        <li>Only one scan per table</li>
+      </ul>
+      <ul class="conclusion">
+        <li>Good for outer joins</li>
+        <li>Good if input is sorted</li>
+      </ul>
+    </div>
+
+    <div id="overview" class="step end" data-x="-50000" data-y="-1500" data-z="3000" data-scale="50">
       <h1 class="highlight">Thank you very much!</h1>
       <p class="footnote">Slides & content available soon at <a href="http://juanignaciosl.github.io">juanignaciosl.github.io</a></p>
     </div>
