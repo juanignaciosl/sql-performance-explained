@@ -16,9 +16,9 @@ CREATE TABLE employees (
   enabled boolean default true
 );
 
-create unique index on employees (employee_id, subsidiary_id);
+create unique index on employees (subsidiary_id, employee_id);
 
-create index employees_last_name on employees(last_name);
+--create index employees_last_name on employees(last_name);
 
 insert into employees (employee_id, subsidiary_id, first_name, last_name, date_of_birth, phone_number)
   select i, i % 100, 'FN ' || i, 'LN ' || i, date '01/01/1950' + i * interval '4 HOUR', 'PN' || i from generate_series(1, 100000) a(i);

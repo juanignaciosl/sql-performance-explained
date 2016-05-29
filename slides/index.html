@@ -104,6 +104,7 @@
     <div id="b-trees-1" class="step description" data-x="-52000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Anatomy of an Index</h1>
       <img src="img/f1.1-index-leaf-nodes.png" class="figure"/>
+      <div class="figure-caption">Index leaf nodes</div>
     </div>
 
     <div id="b-trees-1-1" class="step description notes" data-x="-52000" data-z="-15000" data-rotate-x="-90" data-scale="10">
@@ -129,6 +130,7 @@
     <div id="b-trees-2" class="step description" data-x="-52000" data-y="-15000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Anatomy of an Index</h1>
       <img src="img/f1.2-b-tree-structure.png" class="figure"/>
+      <div class="figure-caption">Tree structure</div>
     </div>
 
     <div id="b-trees-2-1" class="step description notes" data-x="-52000" data-y="-15000" data-z="-15000" data-rotate-x="-90" data-scale="10">
@@ -144,10 +146,12 @@
     <div id="b-trees-3" class="step description" data-x="-52000" data-y="-30000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Anatomy of an Index</h1>
       <img src="img/f1.3-b-tree-traversal.png" class="figure"/>
+      <div class="figure-caption">Tree transversal</div>
     </div>
 
     <div id="b-trees-3-1" class="step description notes" data-x="-52000" data-y="-30000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Anatomy of an Index</h1>
+      <h2>The first power of indexing</h1>
       <ul>
         <li>Tree balance allows accessing all elements with the same number of steps</li>
         <li>Logarithmic growth of the tree depth. Key tree depth factor: number of entries in each tree node. Databases often put hundreds.</li>
@@ -633,6 +637,168 @@ command.setInt(1, subsidiary_id);
       <ul class="conclusion">
         <li>Good for outer joins</li>
         <li>Good if input is sorted</li>
+      </ul>
+    </div>
+
+    <div id="clustering" class="step section" data-x="-40000" data-y="8000" data-scale="10">
+      <h1>Clustering Data</h1>
+      <h2>The Second Power of Indexing</h2>
+    </div>
+
+    <div id="clustering-1" class="step description" data-x="-40000" data-y="8000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index Filter Predicates</h1>
+      <dl>
+        <dt>Clustering data</dt><dd>Store consecutively accessed data closely so thatit requires fewer IO operations</dd>
+      </dl>
+      <ul>
+        <li>You can only sort the physical table with one order...</li>
+        <li>... but you can create multiple indexes, with different orders</li>
+        <li>Index filter predicates can be used not to improve range scan performance but to group consecutively accessed data together</li>
+      </ul>
+    </div>
+
+    <div id="clustering-2-1" class="step description" data-x="-40000" data-y="-7000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index Filter Predicates</h1>
+      <pre><code class="sql">
+SELECT first_name, last_name, subsidiary_id, phone_number
+FROM employees
+WHERE subsidiary_id = ?
+AND UPPER(last_name) LIKE '%INA%';
+      </code></pre>
+      <pre><code class="sql">
+--------------------------------------------------------------
+|Id | Operation | Name | Rows | Cost |
+--------------------------------------------------------------
+| 0 | SELECT STATEMENT | | 17 | 230 |
+|*1 | TABLE ACCESS BY INDEX ROWID| EMPLOYEES | 17 | 230 |
+|*2 | INDEX RANGE SCAN | EMPLOYEE_PK| 333 | 2 |
+--------------------------------------------------------------
+Predicate Information (identified by operation id):
+---------------------------------------------------
+     1 - filter(UPPER("LAST_NAME") LIKE '%INA%')
+     2 - access("SUBSIDIARY_ID"=TO_NUMBER(:A))
+      </code></pre>
+    </div>
+
+    <div id="clustering-2-2" class="step question" data-x="-40000" data-y="-22000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index Filter Predicates</h1>
+      <pre><code class="sql">
+CREATE INDEX empsubupnam ON employees
+    (subsidiary_id, UPPER(last_name));
+      </code></pre>
+    </div>
+
+    <div id="clustering-2-2" class="step answer" data-x="-40000" data-y="-22000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index Filter Predicates</h1>
+      <pre><code class="sql">
+CREATE INDEX empsubupnam ON employees
+    (subsidiary_id, UPPER(last_name));
+      </code></pre>
+      <pre><code class="sql">
+--------------------------------------------------------------
+|Id | Operation                   | Name       | Rows | Cost |
+--------------------------------------------------------------
+| 0 | SELECT STATEMENT            |            |   17 |   20 |
+| 1 |  TABLE ACCESS BY INDEX ROWID| EMPLOYEES  |   17 |   20 |
+|*2 |   INDEX RANGE SCAN          | EMPSUBUPNAM|   17 |    3 |
+--------------------------------------------------------------
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   2 - access("SUBSIDIARY_ID"=TO_NUMBER(:A))
+       filter(UPPER("LAST_NAME") LIKE '%INA%')
+      </code></pre>
+    </div>
+
+    <div id="clustering-3-1" class="step question" data-x="-40000" data-y="-37000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index-only scan</h1>
+      <ul>
+        <li>Avoids accessing the table if the database has selected columns in the index itself</li>
+      </ul>
+    </div>
+
+    <div id="clustering-3-2-1" class="step question" data-x="-40000" data-y="-52000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index-only scan</h1>
+      <pre><code class="sql">
+explain select subsidiary_id, last_name
+    from employees where subsidiary_id < 5;
+      </code></pre>
+      <pre><code class="sql">
+Bitmap Heap Scan on employees
+    (cost=100.20..1089.58 rows=5150 width=12)
+    (actual time=1.102..3.429 rows=5000 loops=1)
+  Recheck Cond: (subsidiary_id < 5)
+  Heap Blocks: exact=925
+  ->  Bitmap Index Scan on employees_subsidiary_id_employee_id_idx
+          (cost=0.00..98.92 rows=5150 width=0)
+          (actual time=0.853..0.853 rows=5000 loops=1)
+        Index Cond: (subsidiary_id < 5)
+Planning time: 0.178 ms
+Execution time: 3.867 ms
+      </code></pre>
+    </div>
+
+    <div id="clustering-3-2-2" class="step question" data-x="-40000" data-y="-67000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index-only scan</h1>
+      <pre><code class="sql">
+CREATE INDEX empsubupnam ON employees
+    (subsidiary_id, last_name);
+      </code></pre>
+    </div>
+
+    <div id="clustering-3-2-3" class="step answer" data-x="-40000" data-y="-67000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index-only scan</h1>
+      <pre><code class="sql">
+CREATE INDEX empsubupnam ON employees
+    (subsidiary_id, last_name);
+      </code></pre>
+      <pre><code class="sql">
+explain select subsidiary_id, last_name
+    from employees where subsidiary_id < 5;
+      </code></pre>
+      <pre><code class="sql">
+<strong>Index Only</strong> Scan using empsubupnam on employees
+      (cost=0.42..170.54 rows=5150 width=12)
+      (actual time=0.109..0.912 rows=5000 loops=1)
+ Index Cond: (subsidiary_id < 5)
+ Heap Fetches: 0
+Planning time: 0.091 ms
+Execution time: 1.244 ms
+      </code></pre>
+    </div>
+
+    <div id="clustering-4" class="step description" data-x="-40000" data-y="-82000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index-organized Tables</h1>
+      <dl>
+        <dt>Index-organized Tables (aka clustered index)</dt>
+        <dd>Using an index as primary table store</dd>
+        <dd>A B-tree index without a heap table</dd>
+      </dl>
+      <ul>
+        <li>Saves the space for the heap structure</li>
+        <li>Every access on a clustered index is automatically an index-only scan</li>
+        <li><strong>Very</strong> inneficient on secondary indexes</li>
+      </ul>
+      <div class="footnote"><a href="https://www.postgresql.org/docs/9.5/static/sql-cluster.html">PostgreSQL CLUSTER</a></div>
+    </div>
+
+    <div id="clustering-4-1" class="step description" data-x="-40000" data-y="-97000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index-organized Tables</h1>
+      <img src="img/f5.1-index-based-heap-table.png" class="figure"/>
+      <div class="figure-caption">Index-based heap table</div>
+    </div>
+
+    <div id="clustering-4-2" class="step description" data-x="-40000" data-y="-112000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Clustering Data: Index-organized Tables</h1>
+      <img src="img/f5.2-secondary-index-iot.png" class="figure"/>
+      <div class="figure-caption">Secondary Index on an IOT</div>
+    </div>
+
+    <div id="clustering-conclusion" class="step question conclusion" data-x="-40000" data-y="-112000" data-z="-30000" data-scale="10">
+      <h1>Clustering data - wrapping it up</h1>
+      <ul>
+        <li>Extend existing indexes to take advantage from filter predicates</li>
+        <li>Extend existing indexes to take advantage from index-only scans</li>
+        <li>Consider index-organized tables if you don't need more than one index</li>
       </ul>
     </div>
 
