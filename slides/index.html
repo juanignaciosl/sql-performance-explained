@@ -63,6 +63,14 @@
       <p class="footnote">More information at <a href="http://www.juanignaciosl.com">personal</a> and (newborn) <a href="http://juanignaciosl.github.io">develop</a> blogs</p>
     </div>
 
+    <div id="poll" class="step" data-x="-88000" data-y="15000" data-scale="10">
+      <img src="img/poll.png" />
+    </div>
+
+    <div id="democracy" class="step" data-x="-76000" data-y="15000" data-scale="10">
+      <img src="img/democracy-overrated.gif" />
+    </div>
+
     <div id="book-and-web" class="step" data-x="-76000"  data-scale="10">
       <img class="book-cover" src="img/sql-performance-explained-cover.png" alt="SQL Performance Explained (book cover)"/>
     </div>
@@ -599,8 +607,8 @@ command.setInt(1, subsidiary_id);
         <li>Requires indexing of the join columns</li>
       </ul>
       <ul class="conclusion">
-        <li>Good performance if the driving query returns a small result set</li>
-        <li>Downside: many B-tree traversals when executing the inner query</li>
+        <li class="good">Good performance if the driving query returns a small result set</li>
+        <li class="bad">Many B-tree traversals when executing the inner query</li>
       </ul>
     </div>
 
@@ -621,8 +629,8 @@ command.setInt(1, subsidiary_id);
         <li>There is no need to index the join columns. Indexing independent where predicates improve performance</li>
       </ul>
       <ul class="conclusion">
-        <li>Only one scan per table</li>
-        <li>Symmetric</li>
+        <li class="good">Only one scan per table</li>
+        <li class="good">Symmetric</li>
       </ul>
     </div>
 
@@ -634,15 +642,15 @@ command.setInt(1, subsidiary_id);
       </ul>
     </div>
 
-    <div id="join-sort-merge" class="step answer" data-x="-52000" data-y="-37000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+    <div id="join-sort-merge-1" class="step answer" data-x="-52000" data-y="-37000" data-z="-30000" data-rotate-x="-90" data-scale="10">
       <h1>The Join Operation: Sort Merge</h1>
       <ul>
         <li>Each relation is sorted on the join attributes before the join starts. Then the two relations are scanned in parallel, and matching rows are combined to form join rows</li>
         <li>Only one scan per table</li>
       </ul>
       <ul class="conclusion">
-        <li>Good for outer joins</li>
-        <li>Good if input is sorted</li>
+        <li class="good">Good for outer joins</li>
+        <li class="good">Good if input is sorted</li>
       </ul>
     </div>
 
@@ -959,12 +967,10 @@ select tablename, attname, correlation from pg_stats where
       Algorithms
       <ul class="alternatives">
         <li>Temporary hash</li>
-        <li>
-          Sort/group
-          <ul class="conclusion">
-            <li class="good">With already sorted indexes</li>
-          </ul>
-        </li>
+        <li>Sort/group</li>
+      </ul>
+      <ul class="conclusion">
+        <li class="good">With already sorted indexes</li>
       </ul>
     </div>
 
@@ -1006,7 +1012,7 @@ FETCH { FIRST | NEXT } [ count ] { ROW | ROWS } ONLY
     </div>
 
     <div id="partial-results-2-1" class="step question" data-x="-52000" data-y="1000" data-z="-45000" data-rotate-x="-90" data-scale="10">
-      <h1>Partial results: paging</h1>
+      <h1>Partial results: paging - offset method</h1>
       <pre><code class="sql">
 SELECT * FROM sales ORDER BY sale_date DESC OFFSET 10
 FETCH NEXT 10 ROWS ONLY;
@@ -1016,7 +1022,7 @@ FETCH NEXT 10 ROWS ONLY;
     </div>
 
     <div id="partial-results-2-2" class="step question" data-x="-52000" data-y="-14000" data-z="-45000" data-rotate-x="-90" data-scale="10">
-      <h1>Partial results: paging</h1>
+      <h1>Partial results: paging - seek method</h1>
       <pre><code class="sql">
 SELECT * FROM sales WHERE sale_date < ?
 ORDER BY sale_date DESC FETCH FIRST 10 ROWS ONLY;
@@ -1307,7 +1313,12 @@ Index Cond: (section = 1::numeric AND id2 = ($1)::numeric)
     </div>
 
     <div id="overview" class="step end" data-x="-40000" data-y="8000" data-z="1000" data-scale="30">
-      <h1 class="highlight">Thank you very much!</h1>
+      <h1>Questions?</h1>
+      <p class="footnote">Slides & content available soon at <a href="http://juanignaciosl.github.io">juanignaciosl.github.io</a></p>
+    </div>
+
+    <div id="overview-2" class="step end answer" data-x="-40000" data-y="8000" data-z="1000" data-scale="30">
+      <h1 class="highlight">Thank you<br />very much!</h1>
       <p class="footnote">Slides & content available soon at <a href="http://juanignaciosl.github.io">juanignaciosl.github.io</a></p>
     </div>
 

@@ -236,7 +236,7 @@ p {
 
 .step img {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 600px;
 }
 
 .step.section h1 {
@@ -424,6 +424,8 @@ ul.conclusion li.bad .wtf {
     -ms-transition-delay:     2s;
     -o-transition-delay:      2s;
     transition-delay:         2s;
+
+    text-shadow: 0px 0px 17px rgba(234, 150, 150, 1);
 }
 
 .present .highlight {
