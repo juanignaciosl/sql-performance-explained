@@ -802,7 +802,167 @@ Execution time: 1.244 ms
       </ul>
     </div>
 
-    <div id="overview" class="step end" data-x="-50000" data-y="-1500" data-z="3000" data-scale="50">
+    <div id="sorting" class="step section" data-x="-28000" data-y="8000" data-scale="10">
+      <h1>Sorting and grouping</h1>
+    </div>
+
+    <div id="sorting-1" class="step description" data-x="-28000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Sorting and grouping</h1>
+      <ul>
+        <li>Indexes provide ordered representations of the indexed data...</li>
+        <li>...so we can use indexes to avoid the sort operation to satisfy an order by clause</li>
+        <li>Indexed order by execution also returns the first results without processing all input data, it's executed in a pipelined manner</li>
+      </ul>
+    </div>
+
+    <div id="sorting-2" class="step description" data-x="-28000" data-y="-15000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Sorting and grouping</h1>
+      <pre><code class="sql">
+explain analyze select * from sales order by sale_date;
+      </code></pre>
+      <pre><code class="sql">
+Sort  (cost=122200.04..124450.04 rows=900000 width=24)
+    (actual time=810.872..1007.881 rows=900000 loops=1)
+ Sort Key: sale_date
+ Sort Method: external merge  Disk: 29912kB
+ ->  Seq Scan on sales
+    (cost=0.00..14733.00 rows=900000 width=24)
+    (actual time=0.006..113.583 rows=900000 loops=1)
+Planning time: 0.112 ms
+Execution time: 1074.673 ms
+      </code></pre>
+    </div>
+
+    <div id="sorting-3" class="step question" data-x="-28000" data-y="-30000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Sorting and grouping</h1>
+      <pre><code class="sql">
+create index sales_date on sales(sale_date);
+      </code></pre>
+      <pre><code class="sql">
+explain analyze select * from sales order by sale_date;
+      </code></pre>
+    </div>
+
+    <div id="sorting-3-1" class="step answer" data-x="-28000" data-y="-30000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Sorting and grouping</h1>
+      <pre><code class="sql">
+create index sales_date on sales(sale_date);
+      </code></pre>
+      <pre><code class="sql">
+explain analyze select * from sales order by sale_date;
+      </code></pre>
+      <pre><code class="sql">
+Index Scan using sales_date on sales
+    (cost=0.42..29120.43 rows=900000 width=24)
+    (actual time=0.024..247.604 rows=900000 loops=1)
+Planning time: 0.118 ms
+Execution time: 315.568 ms
+      </code></pre>
+    </div>
+
+    <div id="sorting-3-2" class="step question" data-x="-28000" data-y="-45000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Sorting and grouping</h1>
+      <ul class="conclusion">
+        <li class="good">Execution time: 1074.673 ms -> 315.568 ms :-) (x0.3)</li>
+        <li class="neutral">Planning time: 0.112 ms -> 0.118 ms :-| (~=)</li>
+      </ul>
+    </div>
+
+    <div id="sorting-3-3" class="step answer" data-x="-28000" data-y="-45000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Sorting and grouping</h1>
+      <ul class="conclusion">
+        <li class="good">Execution time: 1074.673 ms -> 315.568 ms :-) (x0.3)</li>
+        <li class="neutral">Planning time: 0.112 ms -> 0.118 ms :-| (~=)</li>
+        <li class="good">cost=122200.04..124450.04 -> 0.42..29120.43 :-) (x0.2)</li>
+      </ul>
+    </div>
+
+    <div id="sorting-3-4" class="step answer" data-x="-28000" data-y="-45000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Sorting and grouping</h1>
+      <ul class="conclusion">
+        <li class="good">Execution time: 1074.673 ms -> 315.568 ms :-) (x0.3)</li>
+        <li class="neutral">Planning time: 0.112 ms -> 0.118 ms :-| (~=)</li>
+        <li class="good">cost=122200.04..124450.04 -> 0.42..29120.43 :-) (x0.2)</li>
+      </ul>
+      <p><strong>TL;DR: cost is not always an accurate measure</strong></p>
+      <p>For a query that requires scanning a large fraction of the table, an explicit sort is likely to be faster than
+        using an index because it requires less disk I/O due to following a sequential access pattern</p>
+      <p>Cost can increased because <strong>clustering factor</strong> of the new index is worse</p>
+    </div>
+
+    <div id="clustering-factor" class="step section" data-x="-64000" data-y="8000" data-scale="10">
+      <h1>[Clustering Factor]</h1>
+    </div>
+
+    <div id="clustering-factor-1" class="step description" data-x="-64000" data-y="-7000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>[Clustering Factor]</h1>
+      <ul>
+        <li>Performance benchmark</li>
+        <li><strong>Correlation between index order and table order</strong></li>
+        <li>Indirect measure of the probability that two succeeding index entries refer to the same table block</li>
+        <li>Used by the optimizer to calculate the cost value of the TABLE ACCESS BY INDEX ROWID operation</li>
+        <li>Good on chronological data, bad in random</li>
+        <li>Indexes with good clustering factor don't benefit from performance advantage on index-only scan</li>
+      </ul>
+    </div>
+
+    <div id="clustering-factor-2" class="step description" data-x="-64000" data-y="-22000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>[Clustering Factor]</h1>
+      <pre><code class="sql">
+select tablename, attname, correlation from pg_stats where
+    schemaname = 'public';
+      </pre></code>
+      <pre><code class="sql">
+ tablename |    attname    | correlation
+-----------+---------------+-------------
+ employees | date_of_birth |    0.976956
+ employees | phone_number  |    0.801827
+ employees | enabled       |    0.935313
+ sales     | employee_id   |           1
+ sales     | subsidiary_id |   0.0180426
+ sales     | sale_id       |           1
+ sales     | amount        |           1
+ sales     | sale_date     |          -1
+ employees | employee_id   |    0.976954
+ employees | subsidiary_id |   -0.022466
+ employees | first_name    |    0.801827
+ employees | last_name     |    0.801827
+      </pre></code>
+    </div>
+
+    <div id="sorting-3-5" class="step description" data-x="-28000" data-y="-60000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Sorting and grouping: asc/desc and nulls</h1>
+      <ul>
+        <li>Databases can read indexes in both directions</li>
+        <img src="img/f6.5-database-order-features.png" class="figure"/>
+        <div class="figure-caption">Database index sorting and null support features</div>
+      </ul>
+    </div>
+
+    <div id="grouping-1" class="step question" data-x="-28000" data-y="-75000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Sorting and grouping: grouping</h1>
+      Algorithms
+      <ul class="alternatives">
+        <li>Temporary hash</li>
+        <li>Sort/group</li>
+      </ul>
+    </div>
+
+    <div id="grouping-1-1" class="step answer" data-x="-28000" data-y="-75000" data-z="-30000" data-rotate-x="-90" data-scale="10">
+      <h1>Sorting and grouping: grouping</h1>
+      Algorithms
+      <ul class="alternatives">
+        <li>Temporary hash</li>
+        <li>
+          Sort/group
+          <ul class="conclusion">
+            <li class="good">With already sorted indexes</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div id="overview" class="step end" data-x="-40000" data-y="8000" data-z="3000" data-scale="30">
       <h1 class="highlight">Thank you very much!</h1>
       <p class="footnote">Slides & content available soon at <a href="http://juanignaciosl.github.io">juanignaciosl.github.io</a></p>
     </div>
