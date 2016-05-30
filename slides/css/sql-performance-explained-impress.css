@@ -470,6 +470,10 @@ ul.conclusion li.bad .wtf {
   background-size: 300px;
 }
 
+#intro .author a {
+  display: block;
+}
+
 #author.juanignaciosl {
   background: url('../img/nacho.png') no-repeat 100% 40px;
   background-size: 350px;
