@@ -1130,6 +1130,182 @@ ORDER BY sale_date DESC FETCH FIRST 10 ROWS ONLY;
       </ul>
     </div>
 
+    <div id="execution-plans" class="step section" data-x="-28000" data-y="16000" data-scale="10">
+      <h1>Execution plans</h1>
+      <h2>PostgreSQL</h2>
+    </div>
+
+    <div id="execution-plans-1-1" class="step description" data-x="-28000" data-y="16000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans</h1>
+      <pre><code class="sql">
+PREPARE stmt(int) AS SELECT $1;
+      </code></pre>
+    </div>
+
+    <div id="execution-plans-1-2" class="step answer" data-x="-28000" data-y="16000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans</h1>
+      <pre><code class="sql">
+PREPARE stmt(int) AS SELECT $1;
+      </code></pre>
+      <pre><code class="sql">
+EXPLAIN EXECUTE stmt(1);
+      </code></pre>
+    </div>
+
+    <div id="execution-plans-1-3" class="step answer" data-x="-28000" data-y="16000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans</h1>
+      <pre><code class="sql">
+PREPARE stmt(int) AS SELECT $1;
+      </code></pre>
+      <pre><code class="sql">
+EXPLAIN EXECUTE stmt(1);
+      </code></pre>
+      <pre><code class="sql plan">
+Result  (cost=0.00..0.01 rows=1 width=0)
+      </code></pre>
+      <dl>
+        <dt>0.00</dt><dd>Startup cost</dd>
+        <dt>0.01</dt><dd>Total cost for the execution if all rows are retrieved</dd>
+      </dl>
+    </div>
+
+    <div id="execution-plans-1-4" class="step answer" data-x="-28000" data-y="16000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans</h1>
+      <pre><code class="sql">
+PREPARE stmt(int) AS SELECT $1;
+      </code></pre>
+      <pre><code class="sql">
+EXPLAIN EXECUTE stmt(1);
+      </code></pre>
+      <pre><code class="sql plan">
+Result  (cost=0.00..0.01 rows=1 width=0)
+      </code></pre>
+      <dl>
+        <dt>0.00</dt><dd>Startup cost</dd>
+        <dt>0.01</dt><dd>Total cost for the execution if all rows are retrieved</dd>
+      </dl>
+      <pre><code class="sql plan">
+DEALLOCATE stmt;
+      </code></pre>
+    </div>
+
+    <div id="execution-plans-2-1" class="step description" data-x="-28000" data-y="1000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans</h1>
+      <pre><code class="sql">
+EXPLAIN ANALYZE EXECUTE stmt(1);
+      </code></pre>
+Careful, It actually runs the query!
+      <pre><code class="sql">
+EXPLAIN ANALYZE UPDATE EMPLOYEES
+    SET LAST_NAME = 'x' WHERE EMPLOYEE_ID = 1;
+      </code></pre>
+      <pre><code class="sql">
+Update on employees  (cost=0.29..8.31 rows=1 width=34)
+    (actual time=0.261..0.261 rows=0 loops=1)
+  ->  Index Scan using employees_pkey on employees
+      (cost=0.29..8.31 rows=1 width=34)
+      (actual time=0.136..0.138 rows=1 loops=1)
+        Index Cond: (employee_id = 1)
+Planning time: 0.095 ms
+Execution time: 0.297 ms
+      </code></pre>
+    </div>
+
+    <div id="execution-plans-3-1" class="step description" data-x="-28000" data-y="-14000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans: index and table access</h1>
+      <dl>
+        <dt>Seq Scan</dt>
+        <dt>Index Scan</dt>
+        <dt>Index Only Scan</dt>
+        <dt>Bitmap Index Scan / Bitmap Heap Scan / Recheck Cond</dt>
+      </dl>
+      <div class="footnote"><a href="https://www.postgresql.org/message-id/12553.1135634231@sss.pgh.pa.us">Bitmap Index Scan / Bitmap Heap Scan / Recheck Cond explanation</a></div>
+    </div>
+
+    <div id="execution-plans-3-2" class="step description" data-x="-28000" data-y="-29000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans: Join Operations</h1>
+      <dl>
+        <dt>Nested Loops</dt>
+        <dt>Hash Join / Hash</dt>
+        <dt>Merge Join</dt>
+      </dl>
+    </div>
+
+    <div id="execution-plans-3-3" class="step description" data-x="-28000" data-y="-44000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans: Sorting and Grouping</h1>
+      <dl>
+        <dt>Sort / Sort Key</dt>
+        <dt>GroupAggregate</dt>
+        <dt>HashAggregate</dt>
+      </dl>
+    </div>
+
+    <div id="execution-plans-3-4" class="step description" data-x="-28000" data-y="-59000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans: Top-N Queries</h1>
+      <dl>
+        <dt>Limit</dt>
+        <dt>WindowAgg</dt>
+      </dl>
+    </div>
+
+    <div id="execution-plans-3-5" class="step description" data-x="-28000" data-y="-74000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans: Distinguishing Access and Filter-Predicates</h1>
+      <dl>
+        <dt>Access Predicate (“Index Cond”)</dt>
+        <dd>Start and stop conditions of the leaf node traversal</dd>
+        <dt>Index Filter Predicate (“Index Cond”)</dt>
+        <dd>Applied during the leaf node traversal only. They do not contribute to the start and stop conditions and do not narrow the scanned range</dd>
+        <dt>Table level filter predicate (“Filter”)</dt>
+        <dd>Predicates on columns that are not part of the index are evaluated on the table level</dd>
+      </dl>
+      <p>PostgreSQL execution plans do not show index access and filter predicates separately—both show up as “Index Cond”. That means the execution plan must be compared to the index definition to differentiate access predicates from index filter predicates.</p>
+    </div>
+
+    <div id="execution-plans-3-6" class="step answer" data-x="-28000" data-y="-74000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans: Distinguishing Access and Filter-Predicates</h1>
+      <pre><code class="sql">
+CREATE TABLE scale_data (
+     section NUMERIC NOT NULL,
+     id1     NUMERIC NOT NULL,
+     id2     NUMERIC NOT NULL
+  );
+CREATE INDEX scale_data_key ON scale_data(section, id1);
+      </code></pre>
+    </div>
+
+    <div id="execution-plans-3-7" class="step answer" data-x="-28000" data-y="-74000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans: Distinguishing Access and Filter-Predicates</h1>
+      <pre><code class="sql">
+PREPARE stmt(int) AS SELECT count(*)
+                         FROM scale_data
+                        WHERE section = 1
+AND id2 = $1; EXPLAIN EXECUTE stmt(1);
+      </code></pre>
+      <pre><code class="sql plan">
+ Aggregate  (cost=529346.31..529346.32 rows=1 width=0)
+    Output: count(*)
+    -> Index Scan using scale_data_key on scale_data
+       (cost=0.00..529338.83 rows=2989 width=0)
+       Index Cond: (scale_data.section = 1::numeric)
+       Filter: (scale_data.id2 = ($1)::numeric)
+      </code></pre>
+    </div>
+
+    <div id="execution-plans-3-7" class="step answer" data-x="-28000" data-y="-74000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Execution plans: Distinguishing Access and Filter-Predicates</h1>
+      <pre><code class="sql">
+CREATE INDEX scale_slow
+            ON scale_data (section, id1, id2);
+      </code></pre>
+      <pre><code class="sql">
+Aggregate (cost=14215.98..14215.99 rows=1 width=0)
+    Output: count(*)
+-> Index Scan using scale_slow on scale_data
+(cost=0.00..14208.51 rows=2989 width=0)
+Index Cond: (section = 1::numeric AND id2 = ($1)::numeric)
+      </code></pre>
+    </div>
+
     <div id="overview" class="step end" data-x="-40000" data-y="8000" data-z="1000" data-scale="30">
       <h1 class="highlight">Thank you very much!</h1>
       <p class="footnote">Slides & content available soon at <a href="http://juanignaciosl.github.io">juanignaciosl.github.io</a></p>
