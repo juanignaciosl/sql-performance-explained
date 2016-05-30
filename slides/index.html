@@ -1053,6 +1053,83 @@ ORDER BY sale_date DESC FETCH FIRST 10 ROWS ONLY;
       </ul>
     </div>
 
+    <div id="modifying-data" class="step section" data-x="-40000" data-y="16000" data-scale="10">
+      <h1>Modifying data</h1>
+    </div>
+
+    <div id="modifying-data-1" class="step question" data-x="-40000" data-y="16000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Modifying data: insert</h1>
+      The more indexes a table has, the slower the execution becomes.
+      <ol>
+        <li>Store the row in any block with free space</li>
+        <li>
+          Update indexes
+          <ol>
+            <li>Find the correct leaf node</li>
+            <li>Split leaf node if it hasn't free space</li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+
+    <div id="modifying-data-1-1" class="step answer" data-x="-40000" data-y="16000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Modifying data: insert</h1>
+      The more indexes a table has, the slower the execution becomes.
+      <ol>
+        <li>Store the row in any block with free space</li>
+        <li>
+          Update indexes
+          <ol>
+            <li>Find the correct leaf node</li>
+            <li>Split leaf node if it hasn't free space</li>
+          </ol>
+        </li>
+      </ol>
+
+      <ul class="conclusion">
+        <li class="bad">Add the entry to each and every index</li>
+        <li class="bad">Balance tree on split</li>
+      </ul>
+      <strong>Corollary: drop indexes on batch inserts</strong>
+    </div>
+
+    <div id="modifying-data-2" class="step question" data-x="-40000" data-y="1000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Modifying data: delete</h1>
+      Similar to insert but, since it also searches, it takes advantage of indexes.
+      <ol>
+        <li>Find matches</li>
+        <li>Delete the row</li>
+        <li>Update indexes</li>
+      </ol>
+    </div>
+
+    <div id="modifying-data-2-1" class="step answer" data-x="-40000" data-y="1000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Modifying data: delete</h1>
+      Similar to insert but, since it also searches, it takes advantage of indexes.
+      <ol>
+        <li>Find matches</li>
+        <li>Delete the row</li>
+        <li>Update indexes</li>
+      </ol>
+
+      <ul class="conclusion">
+        <li class="good">Takes advantage of indexes for search</li>
+        <li class="bad">Removes the entry from each and every index</li>
+        <li class="bad">Balance the tree on compacting</li>
+      </ul>
+
+      PS: keep MVCC in mind!!!
+    </div>
+
+    <div id="modifying-data-3" class="step question" data-x="-40000" data-y="-14000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Modifying data: update</h1>
+      <ul>
+        <li>Removes the old one and adds the new one</li>
+        <li>Takes as much as delete + insert</li>
+        <li>Sensitive to update only changes (ORMs!)</li>
+      </ul>
+    </div>
+
     <div id="overview" class="step end" data-x="-40000" data-y="8000" data-z="1000" data-scale="30">
       <h1 class="highlight">Thank you very much!</h1>
       <p class="footnote">Slides & content available soon at <a href="http://juanignaciosl.github.io">juanignaciosl.github.io</a></p>

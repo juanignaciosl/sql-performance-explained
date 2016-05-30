@@ -34,7 +34,7 @@ ol, ul {
     line-height: 2;
     margin: inherit;
 }
-ul ul, ul ol {
+ul ul, ul ol, ol ol {
   margin-left: 40px;
 }
 blockquote, q {
