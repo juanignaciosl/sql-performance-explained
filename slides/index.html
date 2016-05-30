@@ -178,7 +178,7 @@
       <h1>The Where Clause</h1>
     </div>
 
-    <div id="where-clause-1" class="step description" data-x="-40000" data-y="-15000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-1" class="step description" data-x="-40000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>The Where Clause</h1>
       <pre><code class="ddl sql">
 CREATE TABLE employees (
@@ -197,7 +197,7 @@ create index employees_last_name on employees(last_name);
       </code></pre>
     </div>
 
-    <div id="where-clause-1c" class="step description" data-x="-40000" data-y="-30000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-1c" class="step description" data-x="-40000" data-y="-15000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>The Where Clause</h1>
       <pre><code class="ddl sql">
         Table "public.employees"
@@ -217,7 +217,7 @@ Indexes:
       </code></pre>
     </div>
 
-    <div id="where-clause-3" class="step question" data-x="-40000" data-y="-45000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-3" class="step question" data-x="-40000" data-y="-30000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - equality</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -225,7 +225,7 @@ FROM employees WHERE employee_id = 123;
       </code></pre>
     </div>
 
-    <div id="where-clause-3b" class="step answer" data-x="-40000" data-y="-45000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-3b" class="step answer" data-x="-40000" data-y="-45000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - equality</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -241,7 +241,7 @@ Execution time: 0.051 ms
       </code></pre>
     </div>
 
-    <div id="where-clause-4" class="step question" data-x="-40000" data-y="-60000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-4" class="step question" data-x="-40000" data-y="-60000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -250,7 +250,7 @@ FROM employees WHERE employee_id = 111
       </code></pre>
     </div>
 
-    <div id="where-clause-4b" class="step answer" data-x="-40000" data-y="-60000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-4b" class="step answer" data-x="-40000" data-y="-60000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -267,7 +267,7 @@ Execution time: 0.056 ms
       </code></pre>
     </div>
 
-    <div id="where-clause-5" class="step question" data-x="-40000" data-y="-75000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-5" class="step question" data-x="-40000" data-y="-75000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -275,7 +275,7 @@ FROM employees WHERE subsidiary_id = 333;
       </code></pre>
     </div>
 
-    <div id="where-clause-5b" class="step answer wtf" data-x="-40000" data-y="-75000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-5b" class="step answer wtf" data-x="-40000" data-y="-75000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -291,7 +291,7 @@ Execution time: 3.527 ms
       </code></pre>
     </div>
 
-    <div id="where-clause-5c" class="step answer wtf" data-x="-40000" data-y="-75000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-5c" class="step answer wtf" data-x="-40000" data-y="-75000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -312,7 +312,7 @@ Execution time: 3.527 ms
       </blockquote>
     </div>
 
-    <div id="where-clause-8" class="step question" data-x="-40000" data-y="-90000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-8" class="step question" data-x="-40000" data-y="-90000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <pre><code class="sql">
 select * from employees where date_of_birth > '1/1/1082'
@@ -328,17 +328,17 @@ create index employees_date on
       </code></pre>
     </div>
 
-    <div id="where-clause-8b" class="step question" data-x="-40000" data-y="-105000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-8b" class="step question" data-x="-40000" data-y="-105000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <img src="img/f2.2-index-range.png" class="figure"/>
     </div>
 
-    <div id="where-clause-8c" class="step question" data-x="-40000" data-y="-120000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-8c" class="step question" data-x="-40000" data-y="-120000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <img src="img/f2.3-index-range.png" class="figure"/>
     </div>
 
-    <div id="where-clause-8d" class="step question compressed" data-x="-40000" data-y="-135000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-8d" class="step question compressed" data-x="-40000" data-y="-135000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <pre><code class="sql">
 Bitmap Heap Scan on employees
@@ -368,7 +368,7 @@ Execution time: 0.084 ms
       </code></pre>
     </div>
 
-    <div id="where-clause-8d-2" class="step answer compressed" data-x="-40000" data-y="-135000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-8d-2" class="step answer compressed" data-x="-40000" data-y="-135000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <pre><code class="sql">
 Bitmap Heap Scan on employees
@@ -405,7 +405,7 @@ Execution time: 0.084 ms
       </blockquote>
     </div>
 
-    <div id="where-clause-6" class="step question" data-x="-40000" data-y="-150000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-6" class="step question" data-x="-40000" data-y="-150000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - functions</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -421,7 +421,7 @@ Execution time: 0.082 ms
       </code></pre>
     </div>
 
-    <div id="where-clause-6b" class="step answer" data-x="-40000" data-y="-165000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-6b" class="step answer" data-x="-40000" data-y="-165000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - functions</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -438,7 +438,7 @@ Execution time: 46.672 ms
       </code></pre>
     </div>
 
-    <div id="where-clause-6d" class="step question" data-x="-40000" data-y="-180000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-6d" class="step question" data-x="-40000" data-y="-180000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - functions</h1>
       <pre><code class="sql">
 create index employees_upper_last_name
@@ -446,7 +446,7 @@ create index employees_upper_last_name
       </code></pre>
     </div>
 
-    <div id="where-clause-6e" class="step answer" data-x="-40000" data-y="-180000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-6e" class="step answer" data-x="-40000" data-y="-180000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - functions</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -467,7 +467,7 @@ Execution time: 0.091 ms
       </code></pre>
     </div>
 
-    <div id="where-clause-6f" class="step question compressed" data-x="-40000" data-y="-195000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-6f" class="step question compressed" data-x="-40000" data-y="-195000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - functions</h1>
       <pre><code class="sql">
 explain analyze select * from employees where employee_id = 5;
@@ -477,7 +477,7 @@ explain analyze select * from employees where employee_id + 1 = 6;
       </code></pre>
     </div>
 
-    <div id="where-clause-6g" class="step answer compressed" data-x="-40000" data-y="-195000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-6g" class="step answer compressed" data-x="-40000" data-y="-195000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - functions</h1>
       <pre><code class="sql">
 explain analyze select * from employees where employee_id = 5;
@@ -500,7 +500,7 @@ Execution time: 15.407 ms
       </code></pre>
     </div>
 
-    <div id="where-clause-9" class="step description" data-x="-40000" data-y="-210000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-9" class="step description" data-x="-40000" data-y="-210000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - partial indexes</h1>
       <h2>Partial indexes</h2>
       <pre><code class="sql">
@@ -509,7 +509,7 @@ create index enabled_employees on employees(last_name)
       </code></pre>
     </div>
 
-    <div id="where-clause-10" class="step description" data-x="-40000" data-y="-225000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-10" class="step description" data-x="-40000" data-y="-225000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - parameterized queries</h1>
       <pre><code class="java">
 int subsidiary_id;
@@ -527,7 +527,7 @@ command.setInt(1, subsidiary_id);
       </ul>
     </div>
 
-    <div id="where-clause-conclusion" class="step question conclusion" data-x="-40000" data-y="-225000" data-scale="10">
+    <div id="where-clause-conclusion" class="step question conclusion" data-x="-40000" data-z="-15000" data-y="-225000" data-scale="10">
       <h1>Where clause: indexes - wrapping it up</h1>
       <ul>
         <li>Master <code>explain plan</code></li>
@@ -541,7 +541,7 @@ command.setInt(1, subsidiary_id);
       </ul>
     </div>
 
-    <div id="where-clause-conclusion-1" class="step answer conclusion" data-x="-40000" data-y="-225000" data-scale="10">
+    <div id="where-clause-conclusion-1" class="step answer conclusion" data-x="-40000" data-z="-15000" data-y="-225000" data-scale="10">
       <h1>Where clause: indexes - wrapping it up</h1>
       <ul>
         <li>Master <code>explain plan</code></li>
@@ -968,7 +968,92 @@ select tablename, attname, correlation from pg_stats where
       </ul>
     </div>
 
-    <div id="overview" class="step end" data-x="-40000" data-y="8000" data-z="3000" data-scale="30">
+    <div id="partial-results" class="step section" data-x="-52000" data-y="16000" data-scale="10">
+      <h1>Partial results</h1>
+    </div>
+
+    <div id="partial-results-1" class="step question" data-x="-52000" data-y="16000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Partial results: retrieving top-n</h1>
+      <ul class="conclusion">
+        <li class="bad">Fetch only the first rows of a query and then closing the statement</li>
+      </ul>
+    </div>
+
+    <div id="partial-results-1-1" class="step answer" data-x="-52000" data-y="16000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Partial results: retrieving top-n</h1>
+      <ul class="conclusion">
+        <li class="bad">Fetch only the first rows of a query and then closing the statement - the optimizer cannot foresee that when preparing the execution plan</li>
+      </ul>
+    </div>
+
+    <div id="partial-results-1-2" class="step answer" data-x="-52000" data-y="16000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Partial results: retrieving top-n</h1>
+      <ul class="conclusion">
+        <li class="bad">Fetch only the first rows of a query and then closing the statement - the optimizer cannot foresee that when preparing the execution plan</li>
+      </ul>
+
+      PostgreSQL
+      <pre><code class="sql">
+LIMIT { count | ALL }
+OFFSET start
+      </pre></code>
+
+SQL:2008
+      <pre><code class="sql">
+OFFSET start { ROW | ROWS }
+FETCH { FIRST | NEXT } [ count ] { ROW | ROWS } ONLY
+      </pre></code>
+    </div>
+
+    <div id="partial-results-2-1" class="step question" data-x="-52000" data-y="1000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Partial results: paging</h1>
+      <pre><code class="sql">
+SELECT * FROM sales ORDER BY sale_date DESC OFFSET 10
+FETCH NEXT 10 ROWS ONLY;
+      </code></pre>
+      <img src="img/f7.2-offset-method.png" class="figure" />
+      <h2 class="figure-caption">The offset method</h2>
+    </div>
+
+    <div id="partial-results-2-2" class="step question" data-x="-52000" data-y="-14000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Partial results: paging</h1>
+      <pre><code class="sql">
+SELECT * FROM sales WHERE sale_date < ?
+ORDER BY sale_date DESC FETCH FIRST 10 ROWS ONLY;
+      </code></pre>
+      <img src="img/f7.3-seek-method.png" class="figure" />
+      <h2 class="figure-caption">The seek method</h2>
+    </div>
+
+    <div id="partial-results-2-3" class="step question" data-x="-52000" data-y="-29000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Partial results: paging</h1>
+      <img src="img/f7.4-paging-performance.png" class="figure" />
+      <h2 class="figure-caption">Offset vs seek performance</h2>
+    </div>
+
+    <div id="partial-results-2-4" class="step question" data-x="-52000" data-y="-44000" data-z="-45000" data-rotate-x="-90" data-scale="10">
+      <h1>Partial results: paging</h1>
+      <ul class="conclusion">
+        <li>
+          Offset method
+          <ul class="conclusion">
+            <li class="good">Simple and syntax support in SQL and ORMs</li>
+            <li class="bad">Poor performance</li>
+            <li class="bad">Pages drift on new items</li>
+          </ul>
+        </li>
+        <li>
+          Seek method
+          <ul class="conclusion">
+            <li class="bad">More complicated</li>
+            <li class="good">Good performance</li>
+            <li class="good">Pages don't drift on new items</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div id="overview" class="step end" data-x="-40000" data-y="8000" data-z="1000" data-scale="30">
       <h1 class="highlight">Thank you very much!</h1>
       <p class="footnote">Slides & content available soon at <a href="http://juanignaciosl.github.io">juanignaciosl.github.io</a></p>
     </div>
