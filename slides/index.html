@@ -87,6 +87,9 @@
       </a>
 
       <a href="https://www.postgresql.org/docs/9.5/static/index.html">PostgreSQL Manual</a>
+
+
+      <p class="footnote"><a href="https://juanignaciosl.github.io/sql-performance-explained/slides/index.html">Slides: juanignaciosl.github.io/sql-performance-explained/slides</a></p>
     </div>
 
     <div id="summary" class="step" data-x="-64000" data-scale="10">
@@ -233,7 +236,7 @@ FROM employees WHERE employee_id = 123;
       </code></pre>
     </div>
 
-    <div id="where-clause-3b" class="step answer" data-x="-40000" data-y="-45000" data-z="-15000" data-rotate-x="-90" data-scale="10">
+    <div id="where-clause-3b" class="step answer" data-x="-40000" data-y="-30000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - equality</h1>
       <pre><code class="sql">
 explain analyze SELECT first_name, last_name
@@ -901,7 +904,7 @@ Execution time: 315.568 ms
       <p><strong>TL;DR: cost is not always an accurate measure</strong></p>
       <p>For a query that requires scanning a large fraction of the table, an explicit sort is likely to be faster than
         using an index because it requires less disk I/O due to following a sequential access pattern</p>
-      <p>Cost can increased because <strong>clustering factor</strong> of the new index is worse</p>
+      <p>Cost can increase because <strong>clustering factor</strong> of the new index is worse</p>
     </div>
 
     <div id="clustering-factor" class="step section" data-x="-64000" data-y="8000" data-scale="10">
