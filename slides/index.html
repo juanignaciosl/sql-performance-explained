@@ -315,8 +315,8 @@ Execution time: 3.527 ms
     <div id="where-clause-8" class="step question" data-x="-40000" data-y="-90000" data-z="-15000" data-rotate-x="-90" data-scale="10">
       <h1>Where clause: indexes - multiple columns</h1>
       <pre><code class="sql">
-select * from employees where date_of_birth > '1/1/1082'
-    and date_of_birth < '1/1/1083' and subsidiary_id = 50;
+select * from employees where date_of_birth > TO_DATE($1, 'YYYY-MM-DD')
+    and date_of_birth < TO_DATE($2, 'YYYY-MM-DD') and subsidiary_id = $3;
       </code></pre>
       <pre><code class="sql">
 create index employees_date on
