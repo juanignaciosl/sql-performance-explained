@@ -507,6 +507,11 @@ ul.conclusion li.bad .wtf {
   float: left;
 }
 
+.not-important {
+  font-size: 70%;
+  color: #666666;
+}
+
 .book-cover {
   max-height: 100%;
 }
