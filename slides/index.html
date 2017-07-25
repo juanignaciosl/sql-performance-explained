@@ -666,7 +666,7 @@ command.setInt(1, subsidiary_id);
     <div id="clustering-1" class="step description" data-x="-40000" data-y="8000" data-z="-30000" data-rotate-x="-90" data-scale="10">
       <h1>Clustering Data: Index Filter Predicates</h1>
       <dl>
-        <dt>Clustering data</dt><dd>Store consecutively accessed data closely so thatit requires fewer IO operations</dd>
+        <dt>Clustering data</dt><dd>Store consecutively accessed data closely so that it requires fewer IO operations</dd>
       </dl>
       <ul>
         <li>You can only sort the physical table with one order...</li>
@@ -794,7 +794,7 @@ Execution time: 1.244 ms
       <ul>
         <li>Saves the space for the heap structure</li>
         <li>Every access on a clustered index is automatically an index-only scan</li>
-        <li><strong>Very</strong> inneficient on secondary indexes</li>
+        <li><strong>Very</strong> inefficient on secondary indexes</li>
       </ul>
       <div class="footnote"><a href="https://www.postgresql.org/docs/9.5/static/sql-cluster.html">PostgreSQL CLUSTER</a></div>
     </div>
@@ -919,7 +919,7 @@ Execution time: 315.568 ms
         <li><strong>Correlation between index order and table order</strong></li>
         <li>Indirect measure of the probability that two succeeding index entries refer to the same table block</li>
         <li>Used by the optimizer to calculate the cost value of the TABLE ACCESS BY INDEX ROWID operation</li>
-        <li>Good on chronological data, bad in random</li>
+        <li>Good on chronological data, bad on random</li>
         <li>Indexes with good clustering factor don't benefit from performance advantage on index-only scan</li>
       </ul>
     </div>
@@ -1076,7 +1076,7 @@ ORDER BY sale_date DESC FETCH FIRST 10 ROWS ONLY;
           Update indexes
           <ol>
             <li>Find the correct leaf node</li>
-            <li>Split leaf node if it hasn't free space</li>
+            <li>Split leaf node if it has no free space</li>
           </ol>
         </li>
       </ol>
@@ -1091,7 +1091,7 @@ ORDER BY sale_date DESC FETCH FIRST 10 ROWS ONLY;
           Update indexes
           <ol>
             <li>Find the correct leaf node</li>
-            <li>Split leaf node if it hasn't free space</li>
+            <li>Split leaf node if it has no free space</li>
           </ol>
         </li>
       </ol>
